@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capoeira: Guia Completo e Visual</title>
+    <!-- Favicon com a logomarca ☯️ -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☯️</text></svg>">
+    
+    <!-- Links de Estilo e Bibliotecas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Configuração e Importação de Módulos Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, addDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Define as dependências do Firebase na janela global para serem usadas em script.js
+        window.firebase = {
+            initializeApp,
+            getAuth,
+            signInAnonymously,
+            signInWithCustomToken,
+            onAuthStateChanged,
+            getFirestore,
+            doc,
+            addDoc,
+            onSnapshot,
+            collection,
+            setLogLevel
+        };
+        // Inicializa o log de depuração do Firestore (opcional)
+        window.firebase.setLogLevel('debug');
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light-mode">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-2">
+                    <span class="text-3xl">☯️</span>
+                    <h1 class="text-2xl font-bold text-stone-700">Guia da Capoeira</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex md:space-x-8">
+                        <a href="#estilos" class="nav-link font-semibold px-3 py-2 text-stone-600 active">Estilos</a>
+                        <a href="#movimentos" class="nav-link font-semibold px-3 py-2 text-stone-600">Movimentos</a>
+                        <a href="#musica" class="nav-link font-semibold px-3 py-2 text-stone-600">Música</a>
+                        <a href="#historia" class="nav-link font-semibold px-3 py-2 text-stone-600">História</a>
+                        <a href="#academia" class="nav-link font-semibold px-3 py-2 text-stone-600">Academia</a>
+                        <a href="#grupos" class="nav-link font-semibold px-3 py-2 text-stone-600">Grupos</a>
+                    </div>
+                     <div class="md:hidden">
+                        <select id="mobile-nav" class="bg-white border border-stone-300 rounded-md py-2 px-3 text-stone-700">
+                            <option value="#estilos">Estilos</option>
+                            <option value="#movimentos">Movimentos</option>
+                            <option value="#musica">Música</option>
+                            <option value="#historia">História</option>
+                            <option value="#academia">Academia</option>
+                            <option value="#grupos">Grupos</option>
+                        </select>
+                    </div>
+                    <!-- Toggle Modo Dia/Noite -->
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-stone-200 dark:hover:bg-gray-700 transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="sun-icon" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="moon-icon" class="h-6 w-6 text-blue-300 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <section id="estilos" class="content-section active pt-8">
+            <!-- Espaço reservado para a imagem visual dos estilos -->
+            <div class="w-full max-w-4xl mx-auto h-64 bg-stone-200 dark:bg-gray-700 rounded-lg shadow-inner mb-12 flex items-center justify-center">
+                <p class="text-stone-500 dark:text-stone-400 font-semibold">Espaço Visual para Diferenciação dos Estilos de Capoeira</p>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center mb-4 text-stone-800">Padrão e Estilos da Capoeira</h2>
+            <p class="text-center max-w-3xl mx-auto text-stone-600 mb-12">A capoeira é uma arte diversa, dividida principalmente em três grandes vertentes. Cada estilo possui características únicas no ritmo, nos movimentos e na filosofia do jogo. Explore abaixo para entender as diferenças e descobrir o sistema de graduação que marca a jornada do capoeirista.</p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-12">
+                <div class="flex justify-center border-b border-stone-200 mb-6">
+                    <button data-tab="angola" class="tab-btn py-2 px-6 font-semibold text-stone-600 rounded-t-lg active">Angola</button>
+                    <button data-tab="regional" class="tab-btn py-2 px-6 font-semibold text-stone-600 rounded-t-lg">Regional</button>
+                    <button data-tab="contemporanea" class="tab-btn py-2 px-6 font-semibold text-stone-600 rounded-t-lg">Contemporânea</button>
+                </div>
+                <div id="tab-content" class="text-stone-700">
+                    <div data-tab-content="angola" class="tab-pane active">
+                        <h3 class="text-2xl font-semibold mb-2 text-blue-600">Capoeira Angola</h3>
+                        <p>Caracterizada pela lentidão, malandragem e movimentos de baixa altura. Seus praticantes se movem próximos ao solo, explorando a ginga de forma dissimulada. A musicalidade é mais lenta e cadenciada, e a roda, geralmente, não tem a mesma agilidade da Regional. O foco está na estratégia, no jogo de corpo e no diálogo corporal.</p>
+                    </div>
+                    <div data-tab-content="regional" class="tab-pane hidden">
+                        <h3 class="text-2xl font-semibold mb-2 text-blue-600">Capoeira Regional</h3>
+                        <p>Criada pelo Mestre Bimba, a Capoeira Regional é mais rápida, objetiva e com movimentos mais retos e acrobáticos. Mestre Bimba a codificou e a tornou uma arte marcial respeitável. A musicalidade é mais acelerada, e o jogo é dinâmico e focado no combate. Seus rituais de roda, como a "sequência de Bimba", são padronizados.</p>
+                    </div>
+                    <div data-tab-content="contemporanea" class="tab-pane hidden">
+                        <h3 class="text-2xl font-semibold mb-2 text-blue-600">Capoeira Contemporânea</h3>
+                        <p>Surge da fusão das duas anteriores, misturando a malícia da Angola com a agilidade da Regional. É a mais praticada hoje em dia e varia muito entre os grupos. A maioria dos sistemas de graduação por cordas que conhecemos hoje foi estabelecida por grupos que se identificam com este estilo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-3xl font-bold text-center mb-4 text-stone-800">Sistema de Graduação</h2>
+            <p class="text-center max-w-3xl mx-auto text-stone-600 mb-12">A graduação na capoeira, simbolizada por cordas coloridas, reconhece a evolução do praticante. Embora a sequência de cores possa variar entre os grupos, ela sempre representa as etapas de aprendizado, da iniciação à maestria.</p>
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-12">
+                <div class="flex flex-wrap justify-center gap-4">
+                    <div class="text-center" title="Iniciante"><div class="w-24 h-6 bg-green-600 rounded-md mx-auto mb-2 border-2 border-green-700"></div><p>Verde</p></div>
+                    <div class="text-center" title="Aluno com mais tempo"><div class="w-24 h-6 bg-yellow-400 rounded-md mx-auto mb-2 border-2 border-yellow-500"></div><p>Amarelo</p></div>
+                    <div class="text-center" title="Aluno intermediário"><div class="w-24 h-6 bg-blue-600 rounded-md mx-auto mb-2 border-2 border-blue-700"></div><p>Azul</p></div>
+                    <div class="text-center" title="Aluno avançado"><div class="w-24 h-6 bg-gradient-to-r from-green-600 to-yellow-400 rounded-md mx-auto mb-2 border-2 border-green-700"></div><p>Verde e Amarelo</p></div>
+                    <div class="text-center" title="Monitor"><div class="w-24 h-6 bg-gradient-to-r from-blue-600 to-green-600 rounded-md mx-auto mb-2 border-2 border-blue-700"></div><p>Azul e Verde</p></div>
+                    <div class="text-center" title="Professor"><div class="w-24 h-6 bg-gradient-to-r from-blue-600 to-yellow-400 rounded-md mx-auto mb-2 border-2 border-blue-700"></div><p>Azul e Amarelo</p></div>
+                    <div class="text-center" title="Mestre"><div class="w-24 h-6 bg-white rounded-md mx-auto mb-2 border-2 border-stone-400"></div><p>Branca</p></div>
+                </div>
+            </div>
+            <div class="border-t border-stone-200 pt-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4">Identificador de Estilo ✨</h3>
+                <p class="text-center max-w-2xl mx-auto text-stone-600 mb-6">Descreva sua prática de capoeira ou o que você mais gosta nela para descobrir qual estilo mais se alinha com você.</p>
+                <div class="flex flex-col items-center">
+                    <textarea id="style-input" class="w-full max-w-xl p-3 border border-stone-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Gosto de jogos lentos e estratégicos, onde a malandragem e a 'conversa' entre os corpos são o mais importante."></textarea>
+                    <button id="style-identify-btn" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-gradient-pulse">
+                        Identificar Estilo ✨
+                    </button>
+                    <div id="style-output-area" class="w-full max-w-xl p-4 mt-6 bg-stone-100 rounded-md text-stone-700 hidden">
+                        <h4 class="font-bold text-lg mb-2">Seu Estilo:</h4>
+                        <p id="identified-style"></p>
+                    </div>
+                    <div id="style-loading-spinner" class="mt-6 hidden">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="movimentos" class="content-section pt-8">
+            <h2 class="text-3xl font-bold text-center mb-4 text-stone-800">Golpes e Movimentos</h2>
+            <p class="text-center max-w-3xl mx-auto text-stone-600 mb-12">A capoeira é um diálogo corporal contínuo. Seus movimentos combinam ataques fluidos, defesas ágeis e deslocamentos acrobáticos. Utilize os filtros abaixo para explorar o arsenal de um capoeirista, desde os golpes básicos até os mais complexos.</p>
+            
+            <div class="flex justify-center space-x-2 mb-8">
+                <button class="filter-btn py-2 px-4 font-semibold text-stone-700 bg-white border border-stone-300 rounded-full active" data-filter="all">Todos</button>
+                <button class="filter-btn py-2 px-4 font-semibold text-stone-700 bg-white border border-stone-300 rounded-full" data-filter="ataque">Ataque</button>
+                <button class="filter-btn py-2 px-4 font-semibold text-stone-700 bg-white border border-stone-300 rounded-full" data-filter="defesa">Defesa</button>
+                <button class="filter-btn py-2 px-4 font-semibold text-stone-700 bg-white border border-stone-300 rounded-full" data-filter="movimentacao">Movimentação</button>
+            </div>
+
+            <div id="movimentos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="ataque">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Meia-lua+de+compasso" alt="Imagem do golpe Meia-lua de compasso" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Meia-lua de compasso</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="ataque">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Armada" alt="Imagem do golpe Armada" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Armada</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="ataque">
+                     <img src="https://placehold.co/600x400/292524/e7e5e4?text=Martelo" alt="Imagem do golpe Martelo" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Martelo</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="ataque">
+                     <img src="https://placehold.co/600x400/292524/e7e5e4?text=Rabo+de+arraia" alt="Imagem do golpe Rabo de arraia" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Rabo de arraia</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="ataque">
+                     <img src="https://placehold.co/600x400/292524/e7e5e4?text=Chapa" alt="Imagem do golpe Chapa" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Chapa</h3></div>
+                </div>
+                 <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="defesa">
+                     <img src="https://placehold.co/600x400/292524/e7e5e4?text=Cocorinha" alt="Imagem da esquiva Cocorinha" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Cocorinha</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="defesa">
+                     <img src="https://placehold.co/600x400/292524/e7e5e4?text=Queda+de+quatro" alt="Imagem da defesa Queda de quatro" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Queda de quatro</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="defesa">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Negativa" alt="Imagem da esquiva Negativa" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Negativa</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="movimentacao">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Aú" alt="Imagem da movimentação Aú" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Aú</h3></div>
+                </div>
+                 <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="movimentacao">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Rolê" alt="Imagem da movimentação Rolê" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Rolê</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="movimentacao">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Ponte" alt="Imagem da movimentação Ponte" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Ponte</h3></div>
+                </div>
+                <div class="movimento-card bg-white rounded-lg shadow-lg overflow-hidden" data-category="movimentacao">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Salto+mortal" alt="Imagem da movimentação Salto mortal" class="w-full h-48 object-cover">
+                    <div class="p-4"><h3 class="font-bold text-lg">Parafuso</h3></div>
+                </div>
+            </div>
+            
+            <div class="border-t border-stone-200 pt-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4">Guia Detalhado de Movimentos ✨</h3>
+                <p class="text-center max-w-2xl mx-auto text-stone-600 mb-6">Obtenha um guia passo a passo conciso para executar o movimento de capoeira chamado.</p>
+                <div class="flex flex-col items-center">
+                    <input type="text" id="move-input" class="w-full max-w-xl p-3 border border-stone-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite o nome do movimento (ex: Ginga, Armada)...">
+                    <button id="guide-btn" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-gradient-pulse">
+                        Gerar Guia Detalhado ✨
+                    </button>
+                    <div id="guide-output-area" class="w-full max-w-xl p-4 mt-6 bg-stone-100 rounded-md text-stone-700 hidden">
+                        <h4 class="font-bold text-lg mb-2">Tutorial:</h4>
+                        <p id="generated-guide"></p>
+                    </div>
+                    <div id="guide-loading-spinner" class="mt-6 hidden">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+             <div class="border-t border-stone-200 pt-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4">Gerador de Treino ✨</h3>
+                <p class="text-center max-w-2xl mx-auto text-stone-600 mb-6">Crie um plano de treino personalizado. Descreva o foco (ex: "agilidade", "resistência", "treino para iniciantes") e receba uma sequência de exercícios.</p>
+                <div class="flex flex-col items-center">
+                    <textarea id="training-input" class="w-full max-w-xl p-3 border border-stone-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: Um treino de meia hora para melhorar a base e a ginga."></textarea>
+                    <button id="training-btn" class="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-gradient-pulse">
+                        Gerar Plano de Treino ✨
+                    </button>
+                    <div id="training-output-area" class="w-full max-w-xl p-4 mt-6 bg-stone-100 rounded-md text-stone-700 hidden">
+                        <h4 class="font-bold text-lg mb-2">Seu Plano de Treino:</h4>
+                        <p id="generated-training"></p>
+                    </div>
+                    <div id="training-loading-spinner" class="mt-6 hidden">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="musica" class="content-section pt-8">
+            <h2 class="text-3xl font-bold text-center mb-4 text-stone-800">O Coração da Roda: Música</h2>
+            <p class="text-center max-w-3xl mx-auto text-stone-600 mb-12">A música é a alma da capoeira. É ela que dita o ritmo, a energia e o estilo do jogo. A orquestra, chamada de "bateria", conduz a roda com instrumentos tradicionais, enquanto as cantigas contam histórias e mantêm a energia vibrante.</p>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <h3 class="text-xl font-bold mb-2">Berimbau</h3>
+                    <p>O instrumento principal. Dita o ritmo (toque) e o tipo de jogo. Existem três tipos: Gunga (grave), Médio e Viola (agudo).</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <h3 class="text-xl font-bold mb-2">Pandeiro</h3>
+                    <p>Marca o ritmo, complementando o berimbau. É o instrumento de percussão mais versátil da roda.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <h3 class="text-xl font-bold mb-2">Atabaque</h3>
+                    <p>Um tambor de couro que fornece a batida principal, o "coração" da bateria, mantendo a base rítmica.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold text-center mb-6">Tipos de Cantigas</h3>
+                <ul class="space-y-4 mb-8">
+                    <li><strong class="text-blue-600">Ladainhas:</strong> Cantadas no início da roda, geralmente por um mestre. Contam histórias e servem para aquecer e concentrar os jogadores.</li>
+                    <li><strong class="text-blue-600">Corridos:</strong> Músicas rápidas e curtas, com um refrão respondido em coro pelos participantes, que acompanham o desenrolar do jogo.</li>
+                    <li><strong class="text-blue-600">Quadras:</strong> Canções de quatro versos que falam de temas do cotidiano, história ou figuras importantes da capoeira.</li>
+                </ul>
+                
+                <div class="border-t border-stone-200 pt-8 mt-8">
+                    <h3 class="text-2xl font-bold text-center mb-4">Gerador de Cantigas ✨</h3>
+                    <p class="text-center max-w-2xl mx-auto text-stone-600 mb-6">Use a inteligência artificial para criar uma nova linha de cantiga que rime com a sua frase, perfeita para inspirar a sua próxima roda de capoeira.</p>
+                    <div class="flex flex-col items-center">
+                        <textarea id="song-input" class="w-full max-w-xl p-3 border border-stone-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite uma frase sobre capoeira aqui..."></textarea>
+                        <button id="generate-btn" class="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-gradient-pulse">
+                            Gerar Cantiga ✨
+                        </button>
+                        <div id="output-area" class="w-full max-w-xl p-4 mt-6 bg-stone-100 rounded-md text-stone-700 hidden">
+                            <h4 class="font-bold text-lg mb-2">Sua Nova Cantiga:</h4>
+                            <p id="generated-text"></p>
+                        </div>
+                        <div id="loading-spinner" class="mt-6 hidden">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-stone-200 pt-8 mt-8">
+                    <h3 class="text-2xl font-bold text-center mb-4">Gerador de Toques do Berimbau ✨</h3>
+                    <p class="text-center max-w-2xl mx-auto text-stone-600 mb-6">Descreva o sentimento ou o estilo de jogo desejado para que a IA sugira o toque de berimbau apropriado e seu contexto.</p>
+                    <div class="flex flex-col items-center">
+                        <textarea id="rhythm-input" class="w-full max-w-xl p-3 border border-stone-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Ex: Um toque para um jogo lento, estratégico e de chão."></textarea>
+                        <button id="rhythm-btn" class="bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-gradient-pulse">
+                            Sugerir Toque ✨
+                        </button>
+                        <div id="rhythm-output-area" class="w-full max-w-xl p-4 mt-6 bg-stone-100 rounded-md text-stone-700 hidden">
+                            <h4 class="font-bold text-lg mb-2">Toque Sugerido:</h4>
+                            <p id="generated-rhythm"></p>
+                        </div>
+                        <div id="rhythm-loading-spinner" class="mt-6 hidden">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="historia" class="content-section pt-8">
+            <h2 class="text-3xl font-bold text-center mb-4 text-stone-800">Raízes e Legado</h2>
+            <p class="text-center max-w-3xl mx-auto text-stone-600 mb-12">A história da capoeira é uma jornada de resistência, marginalização e, finalmente, reconhecimento global. Nascida da luta pela liberdade, ela evoluiu para se tornar um símbolo da cultura brasileira e Patrimônio da Humanidade.</p>
+
+            <div class="bg-white p-8 rounded-lg shadow-lg mb-12">
+                 <div class="relative border-l-4 border-red-200 ml-4 pl-8">
+                    <div class="timeline-item mb-12">
+                        <div class="collapsible flex justify-between items-center pr-4">
+                            <h4 class="font-bold text-lg">Origens na Escravidão</h4>
+                            <span class="text-xl transform rotate-0 transition-transform duration-300">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <p class="text-sm text-stone-600 mt-2">Surgimento no Brasil colonial como forma de autodefesa e resistência cultural dos africanos escravizados, disfarçada de dança para não ser reprimida. Os movimentos eram praticados secretamente para enganar os senhores de engenho, que não os viam como uma forma de combate, mas como uma manifestação folclórica.</p>
+                        </div>
+                    </div>
+                     <div class="timeline-item mb-12">
+                        <div class="collapsible flex justify-between items-center pr-4">
+                            <h4 class="font-bold text-lg">Marginalização</h4>
+                            <span class="text-xl transform rotate-0 transition-transform duration-300">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <p class="text-sm text-stone-600 mt-2">Após a abolição da escravatura, a capoeira foi associada à vadiagem e à criminalidade. Em 1890, o Código Penal da República a proibiu explicitamente, tornando sua prática clandestina. A capoeira continuou a existir em becos e subúrbios, mantida viva por praticantes que desafiavam as leis para preservar a arte.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item mb-12">
+                        <div class="collapsible flex justify-between items-center pr-4">
+                            <h4 class="font-bold text-lg">Legalização e Formalização</h4>
+                            <span class="text-xl transform rotate-0 transition-transform duration-300">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                             <p class="text-sm text-stone-600 mt-2">A Capoeira Regional, criada por Mestre Bimba, foi fundamental para sua legalização. Ao apresentar a arte ao então presidente Getúlio Vargas, em 1937, Mestre Bimba conseguiu o reconhecimento oficial da capoeira como uma arte marcial brasileira. Sua formalização em academias e a criação de um método de ensino estruturado ajudaram a mudar a percepção pública.</p>
+                        </div>
+                    </div>
+                     <div class="timeline-item">
+                        <div class="collapsible flex justify-between items-center pr-4">
+                            <h4 class="font-bold text-lg">Reconhecimento Mundial</h4>
+                            <span class="text-xl transform rotate-0 transition-transform duration-300">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                             <p class="text-sm text-stone-600 mt-2">O reconhecimento pela UNESCO em 2014 foi o ápice de uma longa jornada. A roda de capoeira, com seus cânticos, instrumentos e movimentos, foi declarada Patrimônio Cultural Imaterial da Humanidade. Este título solidificou o status da capoeira como um símbolo da cultura e identidade brasileiras, promovendo sua preservação e disseminação globalmente.</p>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-center mb-6">Grandes Mestres</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Mestre+Bimba" alt="Foto de Mestre Bimba, criador da Capoeira Regional." class="w-full h-48 object-cover rounded-md mb-4">
+                    <h4 class="text-xl font-bold mt-4">Mestre Bimba</h4>
+                    <p class="text-stone-600 mt-2">Manoel dos Reis Machado, o pai da Capoeira Regional. Criou o primeiro método de ensino, com sequências e rituais, transformando a capoeira em uma arte marcial respeitada e estruturada.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Mestre+Pastinha" alt="Foto de Mestre Pastinha, guardião da Capoeira Angola." class="w-full h-48 object-cover rounded-md mb-4">
+                    <h4 class="text-xl font-bold mt-4">Mestre Pastinha</h4>
+                    <p class="text-stone-600 mt-2">Vicente Ferreira Pastinha, o grande guardião da Capoeira Angola. Defendia a capoeira em sua essência, valorizando a tradição, a malícia, a música e a filosofia do jogo como manifestação cultural.</p>
+                </div>
+            </div>
+             <div class="border-t border-stone-200 pt-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4">Diálogo com um Mestre ✨</h3>
+                <p class="text-center max-w-2xl mx-auto text-stone-600 mb-6">Converse com a sabedoria de um mestre de capoeira. Pergunte sobre a filosofia da luta, a história ou os movimentos.</p>
+                <div class="flex flex-col items-center">
+                    <div id="chat-container" class="w-full max-w-xl h-64 overflow-y-auto p-4 bg-stone-100 rounded-md mb-4 flex flex-col space-y-2">
+                        <div class="text-sm text-stone-500 text-center">Inicie a conversa...</div>
+                    </div>
+                    <div class="w-full max-w-xl flex space-x-2">
+                        <input type="text" id="chat-input" class="flex-grow p-3 border border-stone-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Faça uma pergunta ao mestre...">
+                        <button id="send-btn" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-gradient-pulse">
+                            Enviar
+                        </button>
+                    </div>
+                    <div id="chat-loading-spinner" class="mt-4 hidden">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="academia" class="content-section pt-8">
+            <h2 class="text-3xl font-bold text-center mb-4 text-stone-800">Gestão e Logística da Academia</h2>
+             <p class="text-center max-w-3xl mx-auto text-stone-600 mb-12">Organizar uma academia de capoeira vai além do ensino. Envolve a gestão de alunos, a manutenção da identidade visual do grupo e a aquisição dos materiais essenciais para criar um ambiente seguro e autêntico para a prática.</p>
+             
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="font-bold text-xl mb-4">Base de Dados de Alunos</h3>
+                    <p class="mb-4 text-stone-600">Este formulário demonstra como um sistema de cadastro em tempo real pode funcionar para gerenciar informações dos alunos. Os dados são salvos em uma base de dados simulada para este exemplo.</p>
+                    <div id="auth-status" class="mb-4 text-sm text-stone-500">Aguardando autenticação...</div>
+                    <form id="student-form" class="space-y-4">
+                        <input type="text" id="student-name" placeholder="Nome Completo" class="w-full p-2 border border-stone-300 rounded-md">
+                        <input type="text" id="student-group" placeholder="Grupo que faz parte" class="w-full p-2 border border-stone-300 rounded-md">
+                        <input type="text" id="student-style" placeholder="Estilo de capoeira que pertence" class="w-full p-2 border border-stone-300 rounded-md">
+                        <input type="text" id="student-cordel" placeholder="Graduação (Ex: Verde)" class="w-full p-2 border border-stone-300 rounded-md">
+                        <input type="date" id="student-batizado" placeholder="Data do Batizado" class="w-full p-2 border border-stone-300 rounded-md">
+                        <input type="email" id="student-email" placeholder="Email para contato" class="w-full p-2 border border-stone-300 rounded-md">
+                        <input type="tel" id="student-phone" placeholder="Telefone para contato" class="w-full p-2 border border-stone-300 rounded-md">
+                        <button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md w-full">Salvar Aluno</button>
+                    </form>
+                    <div id="form-message" class="mt-4 text-sm text-center"></div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="font-bold text-xl mb-4">Fundamentos e Batizados</h3>
+                    <img src="https://placehold.co/600x400/292524/e7e5e4?text=Cerimônia+de+Batizado" alt="Imagem de uma cerimônia de batizado de capoeira." class="w-full h-48 object-cover rounded-md mb-4">
+                    <p class="text-stone-600">O <strong>batizado</strong> é a cerimônia de entrada oficial do aluno na capoeira, onde ele joga com um mestre ou professor e recebe sua primeira corda. Os <strong>fundamentos</strong> são o conjunto de conhecimentos teóricos e práticos que sustentam a arte.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="font-bold text-xl mb-4">Vestimentas (Abadás)</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://placehold.co/300x400/292524/e7e5e4?text=Homem+com+Abadá+e+Cordel" alt="Imagem de um homem usando abadá e cordel." class="w-full h-auto object-cover rounded-md">
+                        <img src="https://placehold.co/300x400/292524/e7e5e4?text=Mulher+com+Abadá+e+Cordel" alt="Imagem de uma mulher usando abadá e cordel." class="w-full h-auto object-cover rounded-md">
+                    </div>
+                    <p class="mt-4 text-stone-600">O uniforme padrão é o abadá, composto por calça branca e camiseta com o símbolo do grupo. É usado em treinos, e o uniforme completo é obrigatório em cerimônias como o batizado.</p>
+                    <div class="border-t border-stone-200 pt-8 mt-8">
+                        <h4 class="text-2xl font-bold text-center mb-4">Gerador de Ideias para Abadás ✨</h4>
+                        <p class="text-center max-w-2xl mx-auto text-stone-600 mb-6">Descreva a identidade do seu grupo para receber ideias de logomarcas e uniformes.</p>
+                        <div class="flex flex-col items-center">
+                            <textarea id="abadac-input" class="w-full max-w-xl p-3 border border-stone-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Ex: Um grupo com foco em movimentos acrobáticos e rápidos."></textarea>
+                            <button id="abadac-btn" class="bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-gradient-pulse">
+                                Gerar Ideias ✨
+                            </button>
+                            <div id="abadac-output-area" class="w-full max-w-xl p-4 mt-6 bg-stone-100 rounded-md text-stone-700 hidden">
+                                <h4 class="font-bold text-lg mb-2">Ideias Geradas:</h4>
+                                <p id="generated-abadac"></p>
+                            </div>
+                            <div id="abadac-loading-spinner" class="mt-6 hidden">
+                                <div class="loader"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="font-bold text-xl mb-4">Materiais Essenciais</h3>
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <img src="https://placehold.co/200x200/292524/e7e5e4?text=Berimbau" alt="Imagem de um berimbau." class="w-full h-auto object-cover rounded-md">
+                        <img src="https://placehold.co/200x200/292524/e7e5e4?text=Pandeiro" alt="Imagem de um pandeiro." class="w-full h-auto object-cover rounded-md">
+                        <img src="https://placehold.co/200x200/292524/e7e5e4?text=Atabaque" alt="Imagem de um atabaque." class="w-full h-auto object-cover rounded-md">
+                    </div>
+                    <ul class="list-disc list-inside space-y-2 text-stone-600 mb-6">
+                        <li><strong>Instrumentos:</strong> Berimbaus (gunga, médio, viola), pandeiros e atabaque.</li>
+                        <li><strong>Vestuário:</strong> Abadás para alunos e professores.</li>
+                        <li><strong>Segurança:</strong> Colchonetes para treinos de acrobacias.</li>
+                        <li><strong>Apoio:</strong> Sistema de som e quadro branco para aulas teóricas.</li>
+                    </ul>
+                     <h4 class="font-semibold text-lg mb-2">Custo Estimado dos Instrumentos</h4>
+                     <div class="w-full h-64 chart-container mx-auto">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="grupos" class="content-section pt-8">
+            <h2 class="text-3xl font-bold text-center mb-4 text-stone-800">Grupos de Capoeira</h2>
+            <p class="text-center max-w-3xl mx-auto text-stone-600 mb-12">A capoeira é praticada em comunidades e grupos espalhados pelo mundo. Cada grupo possui sua própria identidade, linhagem de mestres e estilo de jogo. Explore abaixo alguns exemplos de grupos existentes e suas informações.</p>
+            <div id="groups-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            
+            <div class="border-t border-stone-200 pt-8 mt-8">
+                <h3 class="text-2xl font-bold text-center mb-4">Redator de Contato com Grupo ✨</h3>
+                <p class="text-center max-w-2xl mx-auto text-stone-600 mb-6">Crie um rascunho de e-mail ou mensagem formal para entrar em contato com um grupo de capoeira (para visitar, ingressar ou perguntar sobre aulas).</p>
+                <div class="flex flex-col items-center">
+                    <textarea id="contact-input" class="w-full max-w-xl p-3 border border-stone-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Ex: Sou estudante intermediário e gostaria de saber sobre as aulas em sua filial em São Paulo e o custo das mensalidades."></textarea>
+                    <button id="contact-btn" class="bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-gradient-pulse">
+                        Gerar Rascunho de Contato ✨
+                    </button>
+                    <div id="contact-output-area" class="w-full max-w-xl p-4 mt-6 bg-stone-100 rounded-md text-stone-700 hidden">
+                        <h4 class="font-bold text-lg mb-2">Rascunho Sugerido:</h4>
+                        <pre id="generated-contact" class="whitespace-pre-wrap font-sans text-sm"></pre>
+                    </div>
+                    <div id="contact-loading-spinner" class="mt-6 hidden">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Link para o arquivo JavaScript (como módulo) -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
